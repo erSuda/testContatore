@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <link rel="manifest" href="manifest.json">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Karma Boomerang - Alek</title>
+    <style>
+        @font-face {
+            font-family: 'HoldMoney-Regular';
+            src: url('HoldMoney-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Wolfganger';
+            src: url('Wolfganger.otf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: 'Wolfganger', 'Helvetica Neue', Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            background: url('sfondo_faccia.png') no-repeat center center fixed; 
+            background-size: cover;
+        }
+
+        h4 {
+            color: black;
+            font-size: 5vh;
+            margin: 3vh 0;
+            text-align: center;
+            font-family: 'HoldMoney-Regular', sans-serif;
+        }
+
+        .title-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .title-background {
+            position: absolute;
+            z-index: 1;
+            height: 100%;
+            width: 120%;
+        }
+
+        .title-container h4 {
+            position: relative;
+            z-index: 2;
+        }
+
+        .music-platforms {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 90%;
+            max-width: 600px;
+            flex-grow: 1;
+            padding: 1vh 0;
+            gap: 2vh;
+        }
+
+        .platform-item {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: auto;
+            text-decoration: none;
+        }
+
+        .platform-background {
+            position: absolute;
+            background-color: white;
+            width: 80%; /* Adjust width to be slightly smaller than the image */
+            height: 85%; /* Adjust height to be slightly smaller than the image */
+            border-radius: 5px; /* Optional: add slight rounding to match image edges */
+            z-index: 1; /* Make sure it is below the image */
+        }
+
+        .platform-background-IG {
+            position: absolute;
+            background-color: white;
+            width: 70%; /* Adjust width to be slightly smaller than the image */
+            height: 70%; /* Adjust height to be slightly smaller than the image */
+            border-radius: 5px; /* Optional: add slight rounding to match image edges */
+            z-index: 1; /* Make sure it is below the image */
+        }
+
+        .platform-item img {
+            position: relative;
+            z-index: 2; /* Make sure the image is above the white background */
+            width: auto;
+            height: auto;
+            max-width: 90%;
+            max-height: 10vh;
+        }
+        
+        @media (max-aspect-ratio: 1/1) and (max-width: 768px) {
+            h4 {
+                font-size: 4vh;
+                margin: 2vh 0;
+            }
+
+            .music-platforms {
+                width: 85%;
+                padding: 3vh 0;
+            }
+
+            .platform-item img {
+                max-height: 8vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="title-container">
+        <img src="pennellata_bianca.png" alt="Background" class="title-background">
+        <h4>KARMA BOOMERANG - ALEK</h4>
+    </div>
+
+    <div class="music-platforms">
+        <!-- Spotify -->
+        <a href="https://open.spotify.com/track/7eEQUaMos4KiUACH5nGOh0?si=Fz-luG3CSqC1QSlBowGaNQ&utm_source=copy-link" class="platform-item">
+            <div class="platform-background"></div>
+            <img src="black_spotify.png" alt="Spotify">
+        </a>
+
+        <!-- YouTube -->
+        <a href="https://music.youtube.com/watch?v=rw0SoESTsds&si=rkJDil4taMlxSLcv" class="platform-item">
+            <div class="platform-background"></div>
+            <img src="black_youtube.png" alt="YouTube Music">
+        </a>
+
+        <!-- Apple Music -->
+        <a href="https://music.apple.com/us/album/karma-boomerang/1776829125?i=1776829126" class="platform-item">
+            <div class="platform-background"></div>
+            <img src="black_apple.png" alt="Apple Music">
+        </a>
+
+        <!-- Amazon Music -->
+        <a href="https://music.amazon.it/albums/B0DLBHVWC2?marketplaceId=APJ6JRA9NG5V4&musicTerritory=IT&ref=dm_sh_RneSyQGXTWfACxkPGJZKBzqmv&trackAsin=B0DLBKMBCW" class="platform-item">
+            <div class="platform-background"></div>
+            <img src="black_amazon.png" alt="Amazon Music">
+        </a>
+
+        <!-- SoundCloud -->
+        <a href="https://on.soundcloud.com/YAAprYRFV4re5hp49" class="platform-item">
+            <div class="platform-background"></div>
+            <img src="black_soundcloud.png" alt="SoundCloud">
+        </a>
+
+        <!-- Deezer -->
+        <a href="https://deezer.page.link/FWDPToZNo8ENXmgM7" class="platform-item">
+            <div class="platform-background"></div>
+            <img src="black_deezer.png" alt="Deezer">
+        </a>
+
+        <!-- Instagram -->
+        <a href="https://www.instagram.com/aleklj56/profilecard/?igsh=eDUyazAybm9wdDhu" class="platform-item">
+            <div class="platform-background-IG"></div>
+            <img src="instagram.png" alt="Instagram">
+        </a>
+    </div>
+
+    <script>
+function trackClick(platform) {
+    const glitchUrl = 'https://level-foremost-prepared.glitch.me/track-click';
+    
+    console.log('Tracking click for platform:', platform);
+    
+    fetch(glitchUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({ platform: platform }),
+        mode: 'cors'  // Aggiunto modo CORS esplicito
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok: ' + response.status);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Click tracked successfully:', data);
+    })
+    .catch(error => {
+        console.error('Error tracking click:', error);
+    });
+
+    // Ritardo il redirect per assicurarmi che il click venga registrato
+    return new Promise(resolve => setTimeout(resolve, 300));
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const platformMap = {
+        'spotify': document.querySelector('a[href*="spotify"]'),
+        'youtube': document.querySelector('a[href*="youtube"]'),
+        'apple': document.querySelector('a[href*="apple"]'),
+        'amazon': document.querySelector('a[href*="amazon"]'),
+        'soundcloud': document.querySelector('a[href*="soundcloud"]'),
+        'deezer': document.querySelector('a[href*="deezer"]'),
+        'instagram': document.querySelector('a[href*="instagram"]')
+    };
+
+    for (const [platform, element] of Object.entries(platformMap)) {
+        if (element) {
+            element.addEventListener('click', async function(e) {
+                e.preventDefault();  // Previene il redirect immediato
+                await trackClick(platform);  // Aspetta che il tracking sia completato
+                window.location.href = this.href;  // Poi procede con il redirect
+            });
+        }
+    }
+});
+</script>
+    
+</body>
+</html>
