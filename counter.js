@@ -1,17 +1,34 @@
 // counter.js
 document.addEventListener('DOMContentLoaded', function() {
-    const NAMESPACE = 'testcontatore'; // namespace più specifico per il tuo sito
+    const NAMESPACE = 'testcontatore';
     
-    // Conta la visita alla pagina
-    fetch(`https://api.countapi.xyz/create?namespace=${NAMESPACE}&key=visits&value=0`, {
-        method: 'GET'
-    }).catch(() => {
-        // Se il contatore esiste già, incrementalo
-        fetch(`https://api.countapi.xyz/hit/${NAMESPACE}/visits`)
-            .catch(error => console.error('Errore conteggio visite:', error));
-    });
+    // Funzione per inizializzare o incrementare un contatore
+    async function initOrHitCounter(key) {
+        try {
+            // Prima prova a ottenere il valore attuale
+            const checkResponse = await fetch(`https://api.countapi.xyz/get/${NAMESPACE}/${key}`);
+            const checkData = await checkResponse.json();
+            
+            if (checkData.value === undefined) {
+                // Se il contatore non esiste, crealo
+                await fetch(`https://api.countapi.xyz/create?namespace=${NAMESPACE}&key=${key}&value=0`);
+                console.log(`Contatore ${key} creato`);
+            }
+            
+            // Incrementa il contatore
+            const hitResponse = await fetch(`https://api.countapi.xyz/hit/${NAMESPACE}/${key}`);
+            const hitData = await hitResponse.json();
+            console.log(`${key} incrementato a: ${hitData.value}`);
+            
+        } catch (error) {
+            console.error(`Errore con il contatore ${key}:`, error);
+        }
+    }
 
-    // Configura i contatori per ogni piattaforma prima di usarli
+    // Conta la visita alla pagina
+    initOrHitCounter('visits');
+
+    // Mappa dei link delle piattaforme
     const platforms = {
         'spotify': 'https://open.spotify.com/track/7eEQUaMos4KiUACH5nGOh0',
         'youtube': 'https://music.youtube.com/watch?v=rw0SoESTsds',
@@ -22,25 +39,25 @@ document.addEventListener('DOMContentLoaded', function() {
         'instagram': 'https://www.instagram.com/aleklj56/profilecard'
     };
 
-    // Inizializza i contatori per ogni piattaforma
-    Object.keys(platforms).forEach(platform => {
-        fetch(`https://api.countapi.xyz/create?namespace=${NAMESPACE}&key=${platform}&value=0`, {
-            method: 'GET'
-        }).catch(() => {
-            // Se esiste già, non fare nulla
-            console.log(`Contatore ${platform} già esistente`);
-        });
-    });
-
     // Aggiungi listener per ogni piattaforma
     document.querySelectorAll('.platform-item').forEach(item => {
         const href = item.getAttribute('href');
         const platform = Object.entries(platforms).find(([_, url]) => href.includes(url))?.[0];
         
         if (platform) {
-            item.addEventListener('click', () => {
-                fetch(`https://api.countapi.xyz/hit/${NAMESPACE}/${platform}`)
-                    .catch(error => console.error(`Errore conteggio ${platform}:`, error));
+            // Inizializza il contatore per questa piattaforma
+            fetch(`https://api.countapi.xyz/create?namespace=${NAMESPACE}&key=${platform}&value=0`)
+                .catch(() => console.log(`Contatore ${platform} già esistente`));
+
+            item.addEventListener('click', (e) => {
+                // Previeni il comportamento di default temporaneamente
+                e.preventDefault();
+                
+                // Incrementa il contatore
+                initOrHitCounter(platform).then(() => {
+                    // Dopo aver contato, reindirizza
+                    window.location.href = href;
+                });
             });
         }
     });
