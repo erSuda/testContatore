@@ -1,21 +1,11 @@
 // counter.js
 document.addEventListener('DOMContentLoaded', function() {
-    const NAMESPACE = 'karmaboomerang';
-    const KEY = 'stats';
+    const NAMESPACE = 'kb2024'; // nome più corto e univoco
+    const KEYS = ['visits', 'spotify', 'youtube', 'apple', 'amazon', 'soundcloud', 'deezer', 'instagram'];
     
-    // Funzione per incrementare un contatore specifico
-    async function incrementCounter(type) {
-        try {
-            const response = await fetch(`https://api.countapi.xyz/hit/${NAMESPACE}/${KEY}_${type}`);
-            const data = await response.json();
-            return data.value;
-        } catch (error) {
-            console.error(`Errore nel conteggio ${type}:`, error);
-        }
-    }
-
     // Conta la visita
-    incrementCounter('visits');
+    fetch(`https://api.countapi.xyz/hit/${NAMESPACE}/visits`)
+        .catch(error => console.error('Errore conteggio visite:', error));
 
     // Aggiungi listener per ogni piattaforma
     const platforms = {
@@ -34,7 +24,8 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (platform) {
             item.addEventListener('click', () => {
-                incrementCounter(platform);
+                fetch(`https://api.countapi.xyz/hit/${NAMESPACE}/${platform}`)
+                    .catch(error => console.error(`Errore conteggio ${platform}:`, error));
             });
         }
     });
