@@ -1,13 +1,17 @@
 // counter.js
 document.addEventListener('DOMContentLoaded', function() {
-    const NAMESPACE = 'kb2024'; // nome più corto e univoco
-    const KEYS = ['visits', 'spotify', 'youtube', 'apple', 'amazon', 'soundcloud', 'deezer', 'instagram'];
+    const NAMESPACE = 'testcontatore'; // namespace più specifico per il tuo sito
     
-    // Conta la visita
-    fetch(`https://api.countapi.xyz/hit/${NAMESPACE}/visits`)
-        .catch(error => console.error('Errore conteggio visite:', error));
+    // Conta la visita alla pagina
+    fetch(`https://api.countapi.xyz/create?namespace=${NAMESPACE}&key=visits&value=0`, {
+        method: 'GET'
+    }).catch(() => {
+        // Se il contatore esiste già, incrementalo
+        fetch(`https://api.countapi.xyz/hit/${NAMESPACE}/visits`)
+            .catch(error => console.error('Errore conteggio visite:', error));
+    });
 
-    // Aggiungi listener per ogni piattaforma
+    // Configura i contatori per ogni piattaforma prima di usarli
     const platforms = {
         'spotify': 'https://open.spotify.com/track/7eEQUaMos4KiUACH5nGOh0',
         'youtube': 'https://music.youtube.com/watch?v=rw0SoESTsds',
@@ -18,6 +22,17 @@ document.addEventListener('DOMContentLoaded', function() {
         'instagram': 'https://www.instagram.com/aleklj56/profilecard'
     };
 
+    // Inizializza i contatori per ogni piattaforma
+    Object.keys(platforms).forEach(platform => {
+        fetch(`https://api.countapi.xyz/create?namespace=${NAMESPACE}&key=${platform}&value=0`, {
+            method: 'GET'
+        }).catch(() => {
+            // Se esiste già, non fare nulla
+            console.log(`Contatore ${platform} già esistente`);
+        });
+    });
+
+    // Aggiungi listener per ogni piattaforma
     document.querySelectorAll('.platform-item').forEach(item => {
         const href = item.getAttribute('href');
         const platform = Object.entries(platforms).find(([_, url]) => href.includes(url))?.[0];
