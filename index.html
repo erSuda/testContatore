@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
+    <script src="counter.js"></script>
     <link rel="manifest" href="manifest.json">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -181,60 +182,6 @@
         </a>
     </div>
 
-    <script>
-function trackClick(platform) {
-    const glitchUrl = 'https://level-foremost-prepared.glitch.me/track-click';
-    
-    console.log('Tracking click for platform:', platform);
-    
-    fetch(glitchUrl, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        },
-        body: JSON.stringify({ platform: platform }),
-        mode: 'cors'  // Aggiunto modo CORS esplicito
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok: ' + response.status);
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log('Click tracked successfully:', data);
-    })
-    .catch(error => {
-        console.error('Error tracking click:', error);
-    });
-
-    // Ritardo il redirect per assicurarmi che il click venga registrato
-    return new Promise(resolve => setTimeout(resolve, 300));
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    const platformMap = {
-        'spotify': document.querySelector('a[href*="spotify"]'),
-        'youtube': document.querySelector('a[href*="youtube"]'),
-        'apple': document.querySelector('a[href*="apple"]'),
-        'amazon': document.querySelector('a[href*="amazon"]'),
-        'soundcloud': document.querySelector('a[href*="soundcloud"]'),
-        'deezer': document.querySelector('a[href*="deezer"]'),
-        'instagram': document.querySelector('a[href*="instagram"]')
-    };
-
-    for (const [platform, element] of Object.entries(platformMap)) {
-        if (element) {
-            element.addEventListener('click', async function(e) {
-                e.preventDefault();  // Previene il redirect immediato
-                await trackClick(platform);  // Aspetta che il tracking sia completato
-                window.location.href = this.href;  // Poi procede con il redirect
-            });
-        }
-    }
-});
-</script>
     
 </body>
 </html>
