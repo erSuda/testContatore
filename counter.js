@@ -1,11 +1,21 @@
 // counter.js
 document.addEventListener('DOMContentLoaded', function() {
-    // ID univoco per il tuo sito
-    const NAMESPACE = 'karmaboomerang';  // Puoi cambiarlo come preferisci
+    const NAMESPACE = 'karmaboomerang';
+    const KEY = 'stats';
     
-    // Conta le visite della pagina
-    fetch(`https://api.countapi.xyz/hit/${NAMESPACE}/visits`)
-        .catch(error => console.error('Errore conteggio visite:', error));
+    // Funzione per incrementare un contatore specifico
+    async function incrementCounter(type) {
+        try {
+            const response = await fetch(`https://api.countapi.xyz/hit/${NAMESPACE}/${KEY}_${type}`);
+            const data = await response.json();
+            return data.value;
+        } catch (error) {
+            console.error(`Errore nel conteggio ${type}:`, error);
+        }
+    }
+
+    // Conta la visita
+    incrementCounter('visits');
 
     // Aggiungi listener per ogni piattaforma
     const platforms = {
@@ -18,17 +28,13 @@ document.addEventListener('DOMContentLoaded', function() {
         'instagram': 'https://www.instagram.com/aleklj56/profilecard'
     };
 
-    // Aggiungi il tracciamento per ogni link
     document.querySelectorAll('.platform-item').forEach(item => {
         const href = item.getAttribute('href');
-        // Trova quale piattaforma è questa
         const platform = Object.entries(platforms).find(([_, url]) => href.includes(url))?.[0];
         
         if (platform) {
             item.addEventListener('click', () => {
-                // Conta il click per questa specifica piattaforma
-                fetch(`https://api.countapi.xyz/hit/${NAMESPACE}/${platform}_clicks`)
-                    .catch(error => console.error(`Errore conteggio click ${platform}:`, error));
+                incrementCounter(platform);
             });
         }
     });
