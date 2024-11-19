@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Karma Boomerang Stats</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        .stat-item {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .stat-name {
+            font-weight: bold;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 20px 0;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Karma Boomerang - Statistiche</h1>
+    <button onclick="loadStats()">Aggiorna Statistiche</button>
+    <div id="stats"></div>
+
+    <script>
+        async function loadStats() {
+            const NAMESPACE = 'kb2024';
+            const KEYS = ['visits', 'spotify', 'youtube', 'apple', 'amazon', 'soundcloud', 'deezer', 'instagram'];
+            const statsDiv = document.getElementById('stats');
+            statsDiv.innerHTML = 'Caricamento...';
+            
+            try {
+                const results = await Promise.all(
+                    KEYS.map(key => 
+                        fetch(`https://api.countapi.xyz/get/${NAMESPACE}/${key}`)
+                            .then(res => res.json())
+                            .then(data => ({key, value: data.value || 0}))
+                            .catch(() => ({key, value: 0}))
+                    )
+                );
+
+                statsDiv.innerHTML = results
+                    .map(({key, value}) => `
+                        <div class="stat-item">
+                            <span class="stat-name">${key.charAt(0).toUpperCase() + key.slice(1)}:</span>
+                            <span class="stat-value">${value}</span>
+                        </div>
+                    `)
+                    .join('');
+            } catch (error) {
+                statsDiv.innerHTML = 'Errore nel caricamento delle statistiche';
+                console.error('Errore:', error);
+            }
+        }
+
+        // Carica le statistiche all'avvio
+        loadStats();
+    </script>
+</body>
+</html>
