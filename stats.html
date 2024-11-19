@@ -14,14 +14,34 @@
             padding: 10px;
             border: 1px solid #ddd;
             border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         .stat-name {
             font-weight: bold;
+        }
+        .stat-value {
+            font-size: 1.2em;
+            color: #2196F3;
         }
         button {
             padding: 10px 20px;
             margin: 20px 0;
             cursor: pointer;
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #1976D2;
+        }
+        .last-update {
+            color: #666;
+            font-size: 0.8em;
+            text-align: right;
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -29,12 +49,15 @@
     <h1>Karma Boomerang - Statistiche</h1>
     <button onclick="loadStats()">Aggiorna Statistiche</button>
     <div id="stats"></div>
+    <div class="last-update" id="lastUpdate"></div>
 
     <script>
+        const NAMESPACE = 'testcontatore'; // Stesso namespace del counter.js
+
         async function loadStats() {
-            const NAMESPACE = 'kb2024';
             const KEYS = ['visits', 'spotify', 'youtube', 'apple', 'amazon', 'soundcloud', 'deezer', 'instagram'];
             const statsDiv = document.getElementById('stats');
+            const lastUpdateDiv = document.getElementById('lastUpdate');
             statsDiv.innerHTML = 'Caricamento...';
             
             try {
@@ -55,6 +78,8 @@
                         </div>
                     `)
                     .join('');
+
+                lastUpdateDiv.innerHTML = `Ultimo aggiornamento: ${new Date().toLocaleString()}`;
             } catch (error) {
                 statsDiv.innerHTML = 'Errore nel caricamento delle statistiche';
                 console.error('Errore:', error);
